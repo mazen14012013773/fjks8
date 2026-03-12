@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div id="navbarContainer"></div>
+
+    <!-- Main Container with Sidebar -->
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div id="sidebarContainer"></div>
+        
+        <!-- Main Content -->
+        <main class="with-sidebar flex-grow-1 p-4">
+            <div class="container-fluid">
+                <!-- Page Header -->
+                <div class="mb-4">
+                    <h1 class="fw-bold">لوحة التحكم</h1>
+                    <p class="text-muted">مرحبا بعودتك!</p>
+                </div>
+
+                <!-- Alert Messages -->
+                <div id="alertContainer"></div>
+
+                <!-- Stats Section -->
+                <div class="row g-4 mb-4">
+                    <!-- Active Projects Card -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-white-50">المشاريع النشطة</h6>
+                                        <h3 class="fw-bold" id="activeProjectsCount">-</h3>
+                                    </div>
+                                    <i class="bi bi-briefcase" style="font-size: 3rem; opacity: 0.5;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pending Proposals Card -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-white-50">العروض المعلقة</h6>
+                                        <h3 class="fw-bold" id="pendingProposalsCount">-</h3>
+                                    </div>
+                                    <i class="bi bi-send" style="font-size: 3rem; opacity: 0.5;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unread Messages Card -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card bg-info text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-white-50">الرسائل الجديدة</h6>
+                                        <h3 class="fw-bold" id="unreadMessagesCount">-</h3>
+                                    </div>
+                                    <i class="bi bi-chat" style="font-size: 3rem; opacity: 0.5;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings Card -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-white-50">الأرباح هذا الشهر</h6>
+                                        <h3 class="fw-bold" id="monthlyEarningsCount">-</h3>
+                                    </div>
+                                    <i class="bi bi-cash" style="font-size: 3rem; opacity: 0.5;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">الإجراءات السريعة</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group">
+                                    <a href="post-project.html" class="list-group-item list-group-item-action">
+                                        <i class="bi bi-plus-circle text-primary"></i> نشر مشروع جديد
+                                    </a>
+                                    <a href="freelancers.html" class="list-group-item list-group-item-action">
+                                        <i class="bi bi-search text-info"></i> البحث عن مستقلين
+                                    </a>
+                                    <a href="messages.html" class="list-group-item list-group-item-action">
+                                        <i class="bi bi-chat text-success"></i> الرسائل
+                                    </a>
+                                    <a href="settings.html" class="list-group-item list-group-item-action">
+                                        <i class="bi bi-sliders text-warning"></i> الإعدادات
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Activity Section -->
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">الأنشطة الأخيرة</h5>
+                            </div>
+                            <div class="card-body" id="recentActivityContainer">
+                                <div class="text-center text-muted py-4">
+                                    <i class="bi bi-hourglass-split"></i>
+                                    <p>جاري التحميل...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Projects Section -->
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">المشاريع الجارية</h5>
+                    </div>
+                    <div class="card-body" id="activeProjectsContainer">
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-hourglass-split"></i>
+                            <p>جاري التحميل...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <div id="footerContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // التحقق من التسجيل
+            AppModule.redirectIfNotAuthenticated('login.html');
+            
+            // تحميل المكونات
+            const navbarHTML = await AppModule.loadComponent('components/navbar.html');
+            document.getElementById('navbarContainer').innerHTML = navbarHTML;
+            
+            const sidebarHTML = await AppModule.loadComponent('components/sidebar.html');
+            document.getElementById('sidebarContainer').innerHTML = sidebarHTML;
+            
+            const footerHTML = await AppModule.loadComponent('components/footer.html');
+            document.getElementById('footerContainer').innerHTML = footerHTML;
+            
+            // تهيئة واجهة المصادقة
+            initializeAuthUI();
+            
+            // تحميل بيانات لوحة التحكم
+            loadDashboardData();
+        });
+        
+        async function loadDashboardData() {
+            try {
+                // تحميل إحصائيات المستخدم
+                const statsResult = await DashboardModule.getUserStats();
+                if (statsResult.ok) {
+                    const stats = statsResult.data;
+                    document.getElementById('activeProjectsCount').textContent = stats.activeProjects || '0';
+                    document.getElementById('pendingProposalsCount').textContent = stats.pendingProposals || '0';
+                    document.getElementById('unreadMessagesCount').textContent = stats.unreadMessages || '0';
+                    document.getElementById('monthlyEarningsCount').textContent = AppModule.formatCurrency(stats.monthlyEarnings || 0);
+                }
+                
+                // تحميل الأنشطة الأخيرة
+                const activityResult = await DashboardModule.getRecentActivity(5);
+                if (activityResult.ok) {
+                    displayRecentActivity(activityResult.data);
+                }
+                
+                // تحميل المشاريع الجارية
+                const projectsResult = await DashboardModule.getActiveProjects();
+                if (projectsResult.ok) {
+                    displayActiveProjects(projectsResult.data);
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل بيانات لوحة التحكم:', error);
+            }
+        }
+        
+        function displayRecentActivity(activities) {
+            const container = document.getElementById('recentActivityContainer');
+            
+            if (!activities || activities.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center">لا توجد أنشطة حالياً</p>';
+                return;
+            }
+            
+            let html = '<div class="list-group list-group-flush">';
+            activities.forEach(activity => {
+                html += `
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-1">${activity.title || 'نشاط'}</h6>
+                                <small class="text-muted">${AppModule.formatDate(activity.createdAt)}</small>
+                            </div>
+                            <span class="badge bg-info">${activity.type || 'عام'}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        function displayActiveProjects(projects) {
+            const container = document.getElementById('activeProjectsContainer');
+            
+            if (!projects || projects.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center">لا توجد مشاريع نشطة حالياً</p>';
+                return;
+            }
+            
+            let html = '<div class="table-responsive"><table class="table"><thead><tr><th>المشروع</th><th>الحالة</th><th>الموعد النهائي</th><th>الإجراءات</th></tr></thead><tbody>';
+            
+            projects.forEach(project => {
+                html += `
+                    <tr>
+                        <td><strong>${project.title || 'بدون عنوان'}</strong></td>
+                        <td><span class="badge bg-info">${project.status || 'جاري'}</span></td>
+                        <td>${AppModule.formatDate(project.deadline)}</td>
+                        <td>
+                            <a href="project-details.html?id=${project.id}" class="btn btn-sm btn-outline-primary">عرض</a>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

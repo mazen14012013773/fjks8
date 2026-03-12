@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأسئلة الشائعة - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div id="navbarContainer"></div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h1 class="text-center fw-bold mb-3">الأسئلة الشائعة</h1>
+                <p class="text-center text-muted lead">إجابات على الأسئلة الأكثر شيوعاً</p>
+            </div>
+        </section>
+
+        <!-- FAQ Content -->
+        <section class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <!-- General Questions -->
+                        <h3 class="fw-bold mb-4">أسئلة عامة</h3>
+                        <div class="accordion mb-5" id="generalFAQ">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                        ما هو FreelanceHub؟
+                                    </button>
+                                </h2>
+                                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#generalFAQ">
+                                    <div class="accordion-body">
+                                        FreelanceHub منصة عربية موثوقة تربط بين المستقلين وأصحاب المشاريع. توفر المنصة بيئة آمنة للتعاون والعمل على المشاريع المختلفة.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                        هل التسجيل مجاني؟
+                                    </button>
+                                </h2>
+                                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#generalFAQ">
+                                    <div class="accordion-body">
+                                        نعم، التسجيل والحساب الأساسي مجاني تماماً. قد تكون هناك رسوم على الخدمات الإضافية.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                        كيف أختار نوع الحساب المناسب؟
+                                    </button>
+                                </h2>
+                                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#generalFAQ">
+                                    <div class="accordion-body">
+                                        إذا كنت تقدم خدمات، اختر حساب مستقل. إذا كنت تحتاج إلى توظيف مستقلين، اختر حساب صاحب مشروع.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Freelancers Questions -->
+                        <h3 class="fw-bold mb-4">للمستقلين</h3>
+                        <div class="accordion mb-5" id="freelancersFAQ">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                        كيف أجد مشاريع مناسبة؟
+                                    </button>
+                                </h2>
+                                <div id="faq4" class="accordion-collapse collapse show" data-bs-parent="#freelancersFAQ">
+                                    <div class="accordion-body">
+                                        استخدم خاصية البحث والفلترة لإيجاد المشاريع التي تناسب مهاراتك وخبرتك.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                        كيف أرسل عرضي على المشاريع؟
+                                    </button>
+                                </h2>
+                                <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#freelancersFAQ">
+                                    <div class="accordion-body">
+                                        بعد العثور على مشروع يناسبك، انقر على "قدم عرضك" واملأ التفاصيل والسعر.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                        كيف أتقاضى أموالي؟
+                                    </button>
+                                </h2>
+                                <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#freelancersFAQ">
+                                    <div class="accordion-body">
+                                        يمكنك سحب أموالك من خلال صفحة "سحب الأموال" باستخدام الطرق المتاحة.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Employers Questions -->
+                        <h3 class="fw-bold mb-4">لأصحاب المشاريع</h3>
+                        <div class="accordion" id="employersFAQ">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                                        كيف أنشر مشروعي؟
+                                    </button>
+                                </h2>
+                                <div id="faq7" class="accordion-collapse collapse show" data-bs-parent="#employersFAQ">
+                                    <div class="accordion-body">
+                                        انتقل إلى "نشر مشروع" واملأ تفاصيل مشروعك، الميزانية، والمهارات المطلوبة.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">
+                                        كيف أختار المستقل المناسب؟
+                                    </button>
+                                </h2>
+                                <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#employersFAQ">
+                                    <div class="accordion-body">
+                                        راجع ملفات المستقلين، اقرأ تقييماتهم، واختر من يناسب احتياجات مشروعك.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq9">
+                                        هل يمكنني تعديل مشروعي بعد النشر؟
+                                    </button>
+                                </h2>
+                                <div id="faq9" class="accordion-collapse collapse" data-bs-parent="#employersFAQ">
+                                    <div class="accordion-body">
+                                        نعم، يمكنك تعديل مشروعك قبل البدء في العمل مع المستقل.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-5 bg-light">
+            <div class="container text-center">
+                <h3 class="fw-bold mb-3">لم تجد إجابتك؟</h3>
+                <p class="text-muted mb-4">تواصل معنا مباشرة للحصول على دعم فني</p>
+                <a href="contact.html" class="btn btn-primary btn-lg">تواصل معنا</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footerContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // تحميل المكونات
+            const navbarHTML = await AppModule.loadComponent('components/navbar.html');
+            document.getElementById('navbarContainer').innerHTML = navbarHTML;
+            
+            const footerHTML = await AppModule.loadComponent('components/footer.html');
+            document.getElementById('footerContainer').innerHTML = footerHTML;
+            
+            // تهيئة واجهة المصادقة
+            initializeAuthUI();
+        });
+    </script>
+</body>
+</html>

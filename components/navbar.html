@@ -1,0 +1,90 @@
+<!-- Navigation Bar Component -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="index.html">
+            <span class="text-primary">Freelance</span>Hub
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto gap-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="freelancers.html">البحث عن فريلانسرز</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="projects.html">المشاريع</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="how-it-works.html">كيف يعمل</a>
+                </li>
+                <li class="nav-item d-lg-none">
+                    <a class="nav-link" href="login.html">دخول</a>
+                </li>
+                <li class="nav-item d-lg-none">
+                    <a class="nav-link" href="register.html">تسجيل</a>
+                </li>
+            </ul>
+            
+            <!-- Auth Buttons -->
+            <div class="d-none d-lg-flex gap-2 ms-3">
+                <a href="login.html" class="btn btn-outline-primary">دخول</a>
+                <a href="register.html" class="btn btn-primary">تسجيل</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Authenticated Navbar (Hidden by default) -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top d-none" id="authenticatedNav">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="index.html">
+            <span class="text-primary">Freelance</span>Hub
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#authNavbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="authNavbarNav">
+            <ul class="navbar-nav ms-auto gap-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="freelancers.html">فريلانسرز</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="projects.html">مشاريع</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="my-projects.html">مشاريعي</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="messages.html">
+                        <i class="bi bi-chat"></i> رسائل
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="notifications.html">
+                        <i class="bi bi-bell"></i> إخطارات
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- User Menu -->
+            <div class="dropdown ms-3">
+                <button class="btn btn-light dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown">
+                    <img src="assets/images/avatars/default.jpg" alt="الملف الشخصي" class="rounded-circle" width="32" height="32">
+                    <span id="userNameDisplay" class="d-none d-lg-inline ms-2"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                    <li><a class="dropdown-item" href="freelancer-profile.html">الملف الشخصي</a></li>
+                    <li><a class="dropdown-item" href="dashboard.html">لوحة التحكم</a></li>
+                    <li><a class="dropdown-item" href="settings.html">الإعدادات</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#" onclick="logout()">تسجيل الخروج</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

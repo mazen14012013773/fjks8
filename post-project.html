@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نشر مشروع - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div id="navbarContainer"></div>
+
+    <!-- Main Container with Sidebar -->
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div id="sidebarContainer"></div>
+        
+        <!-- Main Content -->
+        <main class="with-sidebar flex-grow-1 p-4">
+            <div class="container-fluid">
+                <!-- Page Header -->
+                <div class="mb-4">
+                    <h1 class="fw-bold">نشر مشروع جديد</h1>
+                    <p class="text-muted">ملأ النموذج أدناه لنشر مشروعك</p>
+                </div>
+
+                <!-- Form Card -->
+                <div class="card">
+                    <div class="card-body p-4">
+                        <form id="postProjectForm">
+                            <!-- Project Title -->
+                            <div class="mb-3">
+                                <label for="projectTitle" class="form-label fw-bold">عنوان المشروع *</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="projectTitle" 
+                                    placeholder="عنوان واضح للمشروع"
+                                    required
+                                >
+                                <small class="text-muted">يجب أن يكون واضحاً وموجزاً</small>
+                            </div>
+
+                            <!-- Project Description -->
+                            <div class="mb-3">
+                                <label for="projectDescription" class="form-label fw-bold">وصف المشروع *</label>
+                                <textarea 
+                                    class="form-control" 
+                                    id="projectDescription" 
+                                    rows="5"
+                                    placeholder="اشرح متطلبات المشروع بالتفصيل"
+                                    required
+                                ></textarea>
+                                <small class="text-muted">كن دقيقاً في شرح المتطلبات</small>
+                            </div>
+
+                            <!-- Category -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="category" class="form-label fw-bold">الفئة *</label>
+                                    <select class="form-select" id="category" required>
+                                        <option value="">اختر فئة</option>
+                                        <option value="development">تطوير ويب</option>
+                                        <option value="mobile">تطوير الهاتف</option>
+                                        <option value="design">تصميم</option>
+                                        <option value="writing">كتابة</option>
+                                        <option value="marketing">تسويق</option>
+                                    </select>
+                                </div>
+
+                                <!-- Skills Required -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="requiredSkills" class="form-label fw-bold">المهارات المطلوبة *</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="requiredSkills" 
+                                        placeholder="فصل المهارات بفواصل"
+                                        required
+                                    >
+                                </div>
+                            </div>
+
+                            <!-- Budget Section -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="budget" class="form-label fw-bold">الميزانية *</label>
+                                    <div class="input-group">
+                                        <input 
+                                            type="number" 
+                                            class="form-control" 
+                                            id="budget" 
+                                            placeholder="0.00"
+                                            min="0"
+                                            step="0.01"
+                                            required
+                                        >
+                                        <span class="input-group-text">SAR</span>
+                                    </div>
+                                </div>
+
+                                <!-- Project Type -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="projectType" class="form-label fw-bold">نوع المشروع *</label>
+                                    <select class="form-select" id="projectType" required>
+                                        <option value="">اختر النوع</option>
+                                        <option value="fixed">سعر ثابت</option>
+                                        <option value="hourly">بالساعة</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Timeline -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="deadline" class="form-label fw-bold">الموعد النهائي</label>
+                                    <input 
+                                        type="date" 
+                                        class="form-control" 
+                                        id="deadline"
+                                    >
+                                </div>
+
+                                <!-- Experience Level -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="experienceLevel" class="form-label fw-bold">المستوى المطلوب</label>
+                                    <select class="form-select" id="experienceLevel">
+                                        <option value="">أي مستوى</option>
+                                        <option value="beginner">مبتدئ</option>
+                                        <option value="intermediate">متوسط</option>
+                                        <option value="expert">خبير</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Attachments -->
+                            <div class="mb-3">
+                                <label for="attachments" class="form-label fw-bold">الملفات المرفقة</label>
+                                <input 
+                                    type="file" 
+                                    class="form-control" 
+                                    id="attachments"
+                                    multiple
+                                >
+                                <small class="text-muted">يمكنك رفع عدة ملفات</small>
+                            </div>
+
+                            <!-- Visibility -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">الرؤية</label>
+                                <div class="form-check">
+                                    <input 
+                                        type="radio" 
+                                        class="form-check-input" 
+                                        name="visibility" 
+                                        id="publicProject" 
+                                        value="public"
+                                        checked
+                                    >
+                                    <label class="form-check-label" for="publicProject">
+                                        عام (يراه جميع المستقلين)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input 
+                                        type="radio" 
+                                        class="form-check-input" 
+                                        name="visibility" 
+                                        id="inviteProject" 
+                                        value="invite"
+                                    >
+                                    <label class="form-check-label" for="inviteProject">
+                                        بالدعوة فقط
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-flex gap-3">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-check-circle"></i> نشر المشروع
+                                </button>
+                                <button type="reset" class="btn btn-outline-secondary btn-lg">
+                                    <i class="bi bi-arrow-counterclockwise"></i> إعادة تعيين
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <div id="footerContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/projects.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // التحقق من التسجيل
+            AppModule.redirectIfNotAuthenticated('login.html');
+            
+            // تحميل المكونات
+            const navbarHTML = await AppModule.loadComponent('components/navbar.html');
+            document.getElementById('navbarContainer').innerHTML = navbarHTML;
+            
+            const sidebarHTML = await AppModule.loadComponent('components/sidebar.html');
+            document.getElementById('sidebarContainer').innerHTML = sidebarHTML;
+            
+            const footerHTML = await AppModule.loadComponent('components/footer.html');
+            document.getElementById('footerContainer').innerHTML = footerHTML;
+            
+            // تهيئة واجهة المصادقة
+            initializeAuthUI();
+            
+            // معالج النموذج
+            document.getElementById('postProjectForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const projectData = {
+                    title: document.getElementById('projectTitle').value,
+                    description: document.getElementById('projectDescription').value,
+                    category: document.getElementById('category').value,
+                    requiredSkills: document.getElementById('requiredSkills').value.split(',').map(s => s.trim()),
+                    budget: parseFloat(document.getElementById('budget').value),
+                    type: document.getElementById('projectType').value,
+                    deadline: document.getElementById('deadline').value,
+                    experienceLevel: document.getElementById('experienceLevel').value,
+                    visibility: document.querySelector('input[name="visibility"]:checked').value
+                };
+                
+                try {
+                    const result = await ProjectsModule.createProject(projectData);
+                    if (result.ok) {
+                        AppModule.showSuccess('تم نشر المشروع بنجاح');
+                        setTimeout(() => {
+                            window.location.href = 'my-projects.html';
+                        }, 1500);
+                    }
+                } catch (error) {
+                    AppModule.showError('فشل نشر المشروع');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

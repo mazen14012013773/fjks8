@@ -1,0 +1,671 @@
+/* ========================================
+   لوحة التحكم - Dashboard Styles
+   ======================================== */
+
+/* ستايل الإحصائيات - Stat Cards */
+.stat-card {
+    border: none;
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+}
+
+.stat-card.is-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.stat-card.is-success:hover {
+    box-shadow: 0 15px 40px rgba(17, 153, 142, 0.4);
+}
+
+.stat-card.is-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.stat-card.is-warning:hover {
+    box-shadow: 0 15px 40px rgba(245, 87, 108, 0.4);
+}
+
+.stat-card.is-info {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.stat-card.is-info:hover {
+    box-shadow: 0 15px 40px rgba(79, 172, 254, 0.4);
+}
+
+.stat-card h6 {
+    font-size: 0.875rem;
+    opacity: 0.9;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card .stat-icon {
+    font-size: 2.5rem;
+    opacity: 0.8;
+    margin-bottom: 1rem;
+}
+
+/* ستايل الجداول - Tables */
+.dashboard-table {
+    margin-top: 1.5rem;
+}
+
+.dashboard-table thead {
+    background-color: #f8f9fa;
+    border-top: 2px solid #e9ecef;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.dashboard-table thead th {
+    font-weight: 600;
+    color: #495057;
+    padding: 1rem;
+    border: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dashboard-table tbody tr {
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s ease;
+}
+
+.dashboard-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.dashboard-table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    color: #495057;
+}
+
+.dashboard-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dashboard-table .action-buttons .btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+}
+
+/* وسم الحالة - Status Badge */
+.status-badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.active,
+.status-badge.completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-badge.pending,
+.status-badge.processing {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.inactive,
+.status-badge.rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status-badge.in-progress {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+/* الشريط الجانبي - Sidebar */
+.sidebar {
+    background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding-right: 1.5rem;
+}
+
+.sidebar .nav-link i {
+    margin-right: 0.75rem;
+    width: 20px;
+}
+
+.sidebar h5 {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    font-size: 1.1rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 1rem;
+}
+
+/* نموذج البحث - Search Form */
+.search-form {
+    margin-bottom: 2rem;
+}
+
+.search-form .form-control {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.search-form .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.search-form .search-btn {
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* بطاقة النشاط - Activity Card */
+.activity-card {
+    border-left: 4px solid #667eea;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.activity-card:hover {
+    background-color: #f0f0f0;
+    border-left-color: #764ba2;
+}
+
+.activity-card .activity-time {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.activity-card .activity-title {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 0.25rem;
+}
+
+.activity-card .activity-description {
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+/* الرسوم البيانية - Charts */
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-top: 1.5rem;
+}
+
+.chart-title {
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+/* محتوى التبويبات - Tab Content */
+.tab-content {
+    padding: 2rem 0;
+}
+
+.tab-pane {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* التنبيهات والرسائل - Alerts */
+.dashboard-alert {
+    border-radius: 8px;
+    border: none;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.dashboard-alert i {
+    font-size: 1.25rem;
+}
+
+.dashboard-alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.dashboard-alert.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border-left: 4px solid #ffc107;
+}
+
+.dashboard-alert.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+.dashboard-alert.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border-left: 4px solid #17a2b8;
+}
+
+/* الأزرار - Buttons */
+.btn-dashboard {
+    padding: 0.65rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-dashboard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-dashboard.primary {
+    background-color: #667eea;
+    color: white;
+}
+
+.btn-dashboard.primary:hover {
+    background-color: #5568d3;
+}
+
+.btn-dashboard.secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-dashboard.secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-dashboard.success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-dashboard.success:hover {
+    background-color: #218838;
+}
+
+.btn-dashboard.danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-dashboard.danger:hover {
+    background-color: #c82333;
+}
+
+/* القائمة المنسدلة - Dropdown */
+.dropdown-menu {
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #667eea;
+}
+
+.dropdown-item.active {
+    background-color: #667eea;
+    color: white;
+}
+
+/* بطاقة المعلومات - Info Card */
+.info-card {
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: white;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.info-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+}
+
+.info-card .card-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #667eea;
+}
+
+.info-card .card-title {
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 0.5rem;
+}
+
+.info-card .card-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.info-card .card-description {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+}
+
+/* عنصر قائمة - List Item */
+.dashboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dashboard-list li {
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.2s ease;
+}
+
+.dashboard-list li:hover {
+    background-color: #f8f9fa;
+}
+
+.dashboard-list li:last-child {
+    border-bottom: none;
+}
+
+/* شريط التقدم - Progress Bar */
+.dashboard-progress {
+    height: 8px;
+    border-radius: 10px;
+    background-color: #e9ecef;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.dashboard-progress .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.dashboard-progress.success .progress-fill {
+    background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+}
+
+.dashboard-progress.warning .progress-fill {
+    background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* النماذج - Forms */
+.dashboard-form {
+    margin-top: 1.5rem;
+}
+
+.dashboard-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-form label {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.dashboard-form .form-control,
+.dashboard-form .form-select {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.dashboard-form .form-control:focus,
+.dashboard-form .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.dashboard-form .form-text {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+
+/* العدادات - Counters */
+.counter {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.counter-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+}
+
+/* الراوتر/التوجيه - Router/Navigation */
+.breadcrumb {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb-item {
+    color: #495057;
+}
+
+.breadcrumb-item.active {
+    color: #667eea;
+    font-weight: 600;
+}
+
+/* الشريط العلوي - Top Bar */
+.top-bar {
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.top-bar .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #212529;
+}
+
+.top-bar .actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* التصميم المتجاوب - Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        transition: left 0.3s ease;
+        z-index: 1000;
+    }
+
+    .sidebar.show {
+        left: 0;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .stat-card h3 {
+        font-size: 1.5rem;
+    }
+
+    .dashboard-table {
+        font-size: 0.85rem;
+    }
+
+    .dashboard-table th,
+    .dashboard-table td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .top-bar .actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 576px) {
+    .stat-card {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .stat-card h3 {
+        font-size: 1.25rem;
+    }
+
+    .stat-card h6 {
+        font-size: 0.75rem;
+    }
+
+    .dashboard-table {
+        font-size: 0.75rem;
+    }
+
+    .action-buttons .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    .info-card .card-value {
+        font-size: 1.5rem;
+    }
+}
+
+/* Dark Mode Support (if needed) */
+@media (prefers-color-scheme: dark) {
+    .info-card {
+        background-color: #2c3e50;
+        border-color: #34495e;
+    }
+
+    .info-card .card-title {
+        color: #ecf0f1;
+    }
+
+    .dashboard-list li {
+        border-bottom-color: #34495e;
+    }
+
+    .search-form .form-control {
+        background-color: #34495e;
+        color: #ecf0f1;
+        border-color: #34495e;
+    }
+}

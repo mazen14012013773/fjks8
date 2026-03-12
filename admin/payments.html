@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدفعات - إدارة FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+    <!-- Main Content -->
+    <main class="p-4">
+        <div class="container-fluid">
+            <h1 class="fw-bold mb-4">إدارة الدفعات</h1>
+
+            <!-- Payment Stats -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="text-muted">إجمالي الدفعات</h6>
+                            <h3 class="fw-bold" id="totalPayments">-</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="text-muted">المعلقة</h6>
+                            <h3 class="fw-bold text-warning" id="pendingPayments">-</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="text-muted">المكتملة</h6>
+                            <h3 class="fw-bold text-success" id="completedPayments">-</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="text-muted">الإيرادات</h6>
+                            <h3 class="fw-bold text-primary" id="totalRevenue">-</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="searchPayments" placeholder="بحث عن دفعة...">
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" id="paymentStatus">
+                        <option value="">جميع الحالات</option>
+                        <option value="pending">معلقة</option>
+                        <option value="completed">مكتملة</option>
+                        <option value="failed">فاشلة</option>
+                        <option value="refunded">مسترجعة</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" id="paymentMethod">
+                        <option value="">جميع الطرق</option>
+                        <option value="card">بطاقة ائتمان</option>
+                        <option value="bank">تحويل بنكي</option>
+                        <option value="wallet">المحفظة</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Payments Table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="paymentsTable">
+                            <thead>
+                                <tr>
+                                    <th>رقم العملية</th>
+                                    <th>المستخدم</th>
+                                    <th>المبلغ</th>
+                                    <th>الطريقة</th>
+                                    <th>الحالة</th>
+                                    <th>التاريخ</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentsTableBody">
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">
+                                        <div class="spinner-border" role="status"></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Payment Details Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تفاصيل الدفعة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="paymentDetailsContainer">
+                    <!-- سيتم تحميل التفاصيل هنا -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                    <button type="button" class="btn btn-primary" id="approvePaymentBtn">الموافقة</button>
+                    <button type="button" class="btn btn-danger" id="rejectPaymentBtn">الرفض</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+    
+    <script>
+        let paymentsData = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            AppModule.redirectIfNotAuthenticated('../login.html');
+            loadPayments();
+            setupFilters();
+        });
+
+        function setupFilters() {
+            document.getElementById('searchPayments').addEventListener('input', filterPayments);
+            document.getElementById('paymentStatus').addEventListener('change', filterPayments);
+            document.getElementById('paymentMethod').addEventListener('change', filterPayments);
+        }
+
+        async function loadPayments() {
+            try {
+                const result = await DashboardModule.getPayments(1, 100);
+                if (result.ok) {
+                    paymentsData = result.data.payments || [];
+                    displayPayments(paymentsData);
+                    updatePaymentStats();
+                }
+            } catch (error) {
+                console.error('خطأ:', error);
+            }
+        }
+
+        function updatePaymentStats() {
+            const total = paymentsData.reduce((sum, p) => sum + p.amount, 0);
+            const pending = paymentsData.filter(p => p.status === 'pending').length;
+            const completed = paymentsData.filter(p => p.status === 'completed').length;
+
+            document.getElementById('totalPayments').textContent = AppModule.formatCurrency(total);
+            document.getElementById('pendingPayments').textContent = pending;
+            document.getElementById('completedPayments').textContent = completed;
+            document.getElementById('totalRevenue').textContent = AppModule.formatCurrency(total * 0.1); // 10% platform fee
+        }
+
+        function displayPayments(payments) {
+            const tbody = document.getElementById('paymentsTableBody');
+            if (!payments || payments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-4">لا توجد دفعات</td></tr>';
+                return;
+            }
+
+            let html = '';
+            payments.forEach(payment => {
+                html += `
+                    <tr>
+                        <td><strong>#${payment.transactionId}</strong></td>
+                        <td>${payment.userName}</td>
+                        <td>${AppModule.formatCurrency(payment.amount)}</td>
+                        <td><span class="badge bg-secondary">${getMethodLabel(payment.method)}</span></td>
+                        <td><span class="badge bg-${getPaymentStatusColor(payment.status)}">${payment.status}</span></td>
+                        <td>${AppModule.formatDate(payment.createdAt)}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="viewPaymentDetails('${payment.id}')">عرض</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function getMethodLabel(method) {
+            const labels = {
+                'card': 'بطاقة ائتمان',
+                'bank': 'تحويل بنكي',
+                'wallet': 'المحفظة'
+            };
+            return labels[method] || method;
+        }
+
+        function getPaymentStatusColor(status) {
+            const colors = {
+                'pending': 'warning',
+                'completed': 'success',
+                'failed': 'danger',
+                'refunded': 'info'
+            };
+            return colors[status] || 'secondary';
+        }
+
+        function filterPayments() {
+            const search = document.getElementById('searchPayments').value.toLowerCase();
+            const status = document.getElementById('paymentStatus').value;
+            const method = document.getElementById('paymentMethod').value;
+
+            const filtered = paymentsData.filter(p => {
+                return (p.transactionId.includes(search) || p.userName.toLowerCase().includes(search)) &&
+                       (!status || p.status === status) &&
+                       (!method || p.method === method);
+            });
+
+            displayPayments(filtered);
+        }
+
+        function viewPaymentDetails(paymentId) {
+            const payment = paymentsData.find(p => p.id === paymentId);
+            if (!payment) return;
+
+            const detailsHTML = `
+                <div class="mb-3">
+                    <h6>رقم المعاملة</h6>
+                    <p>#${payment.transactionId}</p>
+                </div>
+                <div class="mb-3">
+                    <h6>المستخدم</h6>
+                    <p>${payment.userName}</p>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>المبلغ</h6>
+                        <p class="text-primary fw-bold">${AppModule.formatCurrency(payment.amount)}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>طريقة الدفع</h6>
+                        <p>${getMethodLabel(payment.method)}</p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h6>الحالة</h6>
+                    <p><span class="badge bg-${getPaymentStatusColor(payment.status)}">${payment.status}</span></p>
+                </div>
+                <div class="mb-3">
+                    <h6>التاريخ</h6>
+                    <p>${AppModule.formatDate(payment.createdAt)}</p>
+                </div>
+            `;
+
+            document.getElementById('paymentDetailsContainer').innerHTML = detailsHTML;
+            document.getElementById('approvePaymentBtn').onclick = () => approvePayment(paymentId);
+            document.getElementById('rejectPaymentBtn').onclick = () => rejectPayment(paymentId);
+
+            new bootstrap.Modal(document.getElementById('paymentModal')).show();
+        }
+
+        function approvePayment(paymentId) {
+            // سيتم تطويره مع الـ API
+            console.log('الموافقة على الدفعة:', paymentId);
+        }
+
+        function rejectPayment(paymentId) {
+            // سيتم تطويره مع الـ API
+            console.log('رفض الدفعة:', paymentId);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عروضي - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div id="navbarContainer"></div>
+
+    <!-- Main Container with Sidebar -->
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div id="sidebarContainer"></div>
+        
+        <!-- Main Content -->
+        <main class="with-sidebar flex-grow-1 p-4">
+            <div class="container-fluid">
+                <!-- Page Header -->
+                <div class="mb-4">
+                    <h1 class="fw-bold">عروضي</h1>
+                    <p class="text-muted">تتبع عروضك على المشاريع</p>
+                </div>
+
+                <!-- Tabs -->
+                <ul class="nav nav-tabs mb-4" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">
+                            <i class="bi bi-hourglass"></i> معلق
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="acceptedTab" data-bs-toggle="tab" data-bs-target="#accepted" type="button" role="tab">
+                            <i class="bi bi-check-circle"></i> مقبول
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="rejectedTab" data-bs-toggle="tab" data-bs-target="#rejected" type="button" role="tab">
+                            <i class="bi bi-x-circle"></i> مرفوض
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="allTab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">
+                            <i class="bi bi-list"></i> الكل
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Pending Proposals -->
+                    <div class="tab-pane fade show active" id="pending" role="tabpanel">
+                        <div id="pendingContainer">
+                            <div class="text-center py-5">
+                                <div class="spinner-border" role="status"></div>
+                                <p class="text-muted mt-2">جاري التحميل...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accepted Proposals -->
+                    <div class="tab-pane fade" id="accepted" role="tabpanel">
+                        <div id="acceptedContainer">
+                            <div class="text-center py-5">
+                                <div class="spinner-border" role="status"></div>
+                                <p class="text-muted mt-2">جاري التحميل...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rejected Proposals -->
+                    <div class="tab-pane fade" id="rejected" role="tabpanel">
+                        <div id="rejectedContainer">
+                            <div class="text-center py-5">
+                                <div class="spinner-border" role="status"></div>
+                                <p class="text-muted mt-2">جاري التحميل...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- All Proposals -->
+                    <div class="tab-pane fade" id="all" role="tabpanel">
+                        <div id="allContainer">
+                            <div class="text-center py-5">
+                                <div class="spinner-border" role="status"></div>
+                                <p class="text-muted mt-2">جاري التحميل...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <div id="footerContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/projects.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // التحقق من التسجيل
+            AppModule.redirectIfNotAuthenticated('login.html');
+            
+            // تحميل المكونات
+            const navbarHTML = await AppModule.loadComponent('components/navbar.html');
+            document.getElementById('navbarContainer').innerHTML = navbarHTML;
+            
+            const sidebarHTML = await AppModule.loadComponent('components/sidebar.html');
+            document.getElementById('sidebarContainer').innerHTML = sidebarHTML;
+            
+            const footerHTML = await AppModule.loadComponent('components/footer.html');
+            document.getElementById('footerContainer').innerHTML = footerHTML;
+            
+            // تهيئة واجهة المصادقة
+            initializeAuthUI();
+            
+            // تحميل العروض
+            loadProposals('pending');
+            loadProposals('accepted');
+            loadProposals('rejected');
+            loadProposals(null);
+        });
+
+        async function loadProposals(status) {
+            try {
+                const result = await ProjectsModule.getMyProposals(status);
+                if (result.ok) {
+                    const proposals = result.data.proposals || [];
+                    
+                    if (status === 'pending') {
+                        displayProposals(proposals, 'pendingContainer');
+                    } else if (status === 'accepted') {
+                        displayProposals(proposals, 'acceptedContainer');
+                    } else if (status === 'rejected') {
+                        displayProposals(proposals, 'rejectedContainer');
+                    } else if (!status) {
+                        displayProposals(proposals, 'allContainer');
+                    }
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل العروض:', error);
+            }
+        }
+
+        function displayProposals(proposals, containerId) {
+            const container = document.getElementById(containerId);
+            
+            if (!proposals || proposals.length === 0) {
+                container.innerHTML = `
+                    <div class="alert alert-info text-center">
+                        <i class="bi bi-info-circle"></i> لا توجد عروض
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="row g-3">';
+            
+            proposals.forEach(proposal => {
+                html += `
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">${proposal.projectTitle || 'مشروع'}</h5>
+                                <p class="card-text text-muted">${proposal.projectDescription || ''}</p>
+                                
+                                <div class="row g-2 mb-3">
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">عرضك</small>
+                                        <strong class="text-primary">${AppModule.formatCurrency(proposal.bidAmount || 0)}</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">الحالة</small>
+                                        <small class="badge bg-${getProposalBadgeColor(proposal.status)}">${proposal.status || 'معلق'}</small>
+                                    </div>
+                                </div>
+
+                                <small class="text-muted d-block mb-3">
+                                    <i class="bi bi-calendar-event"></i>
+                                    ${AppModule.formatDate(proposal.submittedDate)}
+                                </small>
+
+                                <a href="project-details.html?id=${proposal.projectId}" class="btn btn-sm btn-outline-primary w-100">
+                                    عرض المشروع
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function getProposalBadgeColor(status) {
+            const colors = {
+                'pending': 'warning',
+                'accepted': 'success',
+                'rejected': 'danger',
+                'completed': 'info'
+            };
+            return colors[status] || 'secondary';
+        }
+    </script>
+</body>
+</html>

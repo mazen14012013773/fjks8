@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المستقلون - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div id="navbarContainer"></div>
+
+    <!-- Main Content -->
+    <main class="py-5">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="mb-4">
+                <h1 class="fw-bold">البحث عن المستقلين</h1>
+                <p class="text-muted">اعثر على المستقل المناسب لمشروعك</p>
+            </div>
+
+            <!-- Filters Section -->
+            <div class="row mb-4">
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">الفلاتر</h6>
+                            
+                            <!-- Search -->
+                            <div class="mb-3">
+                                <label class="form-label">بحث</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="searchInput" 
+                                    placeholder="ابحث عن مستقل..."
+                                >
+                            </div>
+
+                            <!-- Specialty Filter -->
+                            <div class="mb-3">
+                                <label class="form-label">التخصص</label>
+                                <select class="form-select" id="specialtyFilter">
+                                    <option value="">جميع التخصصات</option>
+                                    <option value="development">تطوير ويب</option>
+                                    <option value="mobile">تطوير الهاتف</option>
+                                    <option value="design">تصميم</option>
+                                    <option value="writing">كتابة</option>
+                                    <option value="marketing">تسويق رقمي</option>
+                                </select>
+                            </div>
+
+                            <!-- Rating Filter -->
+                            <div class="mb-3">
+                                <label class="form-label">التقييم</label>
+                                <select class="form-select" id="ratingFilter">
+                                    <option value="">جميع التقييمات</option>
+                                    <option value="5">5 نجوم</option>
+                                    <option value="4">4 نجوم وأكثر</option>
+                                    <option value="3">3 نجوم وأكثر</option>
+                                </select>
+                            </div>
+
+                            <!-- Availability -->
+                            <div class="mb-3">
+                                <label class="form-label">التوفرية</label>
+                                <select class="form-select" id="availabilityFilter">
+                                    <option value="">جميع الحالات</option>
+                                    <option value="available">متاح الآن</option>
+                                    <option value="soon">متاح قريباً</option>
+                                </select>
+                            </div>
+
+                            <button 
+                                class="btn btn-primary w-100 btn-sm" 
+                                onclick="applyFilters()"
+                            >
+                                تطبيق الفلاتر
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Freelancers List -->
+                <div class="col-lg-9">
+                    <div id="freelancersListContainer">
+                        <div class="text-center py-5">
+                            <div class="spinner-border" role="status"></div>
+                            <p class="text-muted mt-2">جاري التحميل...</p>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div id="paginationContainer" class="mt-4"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footerContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        let currentPage = 1;
+        const itemsPerPage = 12;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // تحميل المكونات
+            const navbarHTML = await AppModule.loadComponent('components/navbar.html');
+            document.getElementById('navbarContainer').innerHTML = navbarHTML;
+            
+            const footerHTML = await AppModule.loadComponent('components/footer.html');
+            document.getElementById('footerContainer').innerHTML = footerHTML;
+            
+            // تهيئة واجهة المصادقة
+            initializeAuthUI();
+            
+            // تحميل المستقلين
+            loadFreelancers();
+        });
+
+        async function loadFreelancers(page = 1) {
+            currentPage = page;
+            const searchText = document.getElementById('searchInput').value;
+            const specialty = document.getElementById('specialtyFilter').value;
+            const rating = document.getElementById('ratingFilter').value;
+            const availability = document.getElementById('availabilityFilter').value;
+
+            try {
+                const response = await AppModule.apiRequest('/freelancers', {
+                    method: 'GET'
+                });
+
+                if (response.ok) {
+                    displayFreelancers(response.data.freelancers || []);
+                    displayPagination(response.data.pagination || {});
+                } else {
+                    AppModule.showError('فشل تحميل المستقلين');
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل المستقلين:', error);
+                AppModule.showError('حدث خطأ في تحميل المستقلين');
+            }
+        }
+
+        function displayFreelancers(freelancers) {
+            const container = document.getElementById('freelancersListContainer');
+            
+            if (!freelancers || freelancers.length === 0) {
+                container.innerHTML = `
+                    <div class="alert alert-info text-center">
+                        <i class="bi bi-info-circle"></i> لم يتم العثور على مستقلين
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="row g-3">';
+            freelancers.forEach(freelancer => {
+                html += `
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <img src="assets/images/avatars/default.jpg" alt="${freelancer.name}" class="rounded-circle mb-3" width="80" height="80">
+                                <h5 class="card-title">${freelancer.name || 'بدون اسم'}</h5>
+                                <p class="text-muted mb-2">${freelancer.specialty || 'تخصص'}</p>
+                                
+                                <!-- Rating -->
+                                <div class="mb-2">
+                                    <span class="text-warning">
+                                        ${'★'.repeat(Math.floor(freelancer.rating || 0))}${'☆'.repeat(5 - Math.floor(freelancer.rating || 0))}
+                                    </span>
+                                    <small class="text-muted">(${freelancer.reviews || 0} تقييم)</small>
+                                </div>
+
+                                <!-- Hourly Rate -->
+                                <div class="mb-3">
+                                    <strong class="text-primary">${AppModule.formatCurrency(freelancer.hourlyRate || 0)}/ساعة</strong>
+                                </div>
+
+                                <!-- Status Badge -->
+                                <div class="mb-3">
+                                    <span class="badge bg-${freelancer.available ? 'success' : 'secondary'}">
+                                        ${freelancer.available ? 'متاح' : 'غير متاح'}
+                                    </span>
+                                </div>
+
+                                <a href="freelancer-profile.html?id=${freelancer.id}" class="btn btn-primary w-100 btn-sm">
+                                    عرض الملف الشخصي
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function displayPagination(pagination) {
+            const container = document.getElementById('paginationContainer');
+            if (!pagination.totalPages || pagination.totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '<nav><ul class="pagination justify-content-center">';
+            
+            for (let i = 1; i <= pagination.totalPages; i++) {
+                html += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="loadFreelancers(${i}); return false;">
+                            ${i}
+                        </a>
+                    </li>
+                `;
+            }
+            
+            html += '</ul></nav>';
+            container.innerHTML = html;
+        }
+
+        function applyFilters() {
+            loadFreelancers(1);
+        }
+    </script>
+</body>
+</html>

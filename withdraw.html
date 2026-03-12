@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سحب الأموال - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div id="navbarContainer"></div>
+
+    <!-- Main Container with Sidebar -->
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div id="sidebarContainer"></div>
+        
+        <!-- Main Content -->
+        <main class="with-sidebar flex-grow-1 p-4">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-8 col-md-10 mx-auto">
+                        <!-- Page Header -->
+                        <div class="mb-4">
+                            <h1 class="fw-bold">سحب الأموال</h1>
+                            <p class="text-muted">سحب أرباحك بسهولة وأمان</p>
+                        </div>
+
+                        <!-- Balance Summary -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="text-muted mb-2">الرصيد المتاح</h6>
+                                        <h3 class="fw-bold text-success" id="availableBalance">-</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="text-muted mb-2">الحد الأدنى للسحب</h6>
+                                        <h3 class="fw-bold text-primary" id="minimumWithdrawal">-</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="text-muted mb-2">رسوم السحب</h6>
+                                        <h3 class="fw-bold text-warning" id="withdrawalFee">-</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Withdrawal Form -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">إنشاء طلب سحب</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="withdrawalForm">
+                                    <!-- Withdrawal Method -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">طريقة السحب</label>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <input type="radio" class="form-check-input" name="withdrawalMethod" id="bankTransfer" value="bank" checked>
+                                                <label class="form-check-label" for="bankTransfer">
+                                                    <i class="bi bi-bank"></i> تحويل بنكي
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="radio" class="form-check-input" name="withdrawalMethod" id="wallet" value="wallet">
+                                                <label class="form-check-label" for="wallet">
+                                                    <i class="bi bi-wallet"></i> محفظة رقمية
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Bank Info Section (conditional) -->
+                                    <div id="bankSection">
+                                        <div class="mb-3">
+                                            <label for="bankName" class="form-label">اسم البنك</label>
+                                            <input type="text" class="form-control" id="bankName" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="accountNumber" class="form-label">رقم الحساب</label>
+                                            <input type="text" class="form-control" id="accountNumber" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="accountHolder" class="form-label">اسم صاحب الحساب</label>
+                                            <input type="text" class="form-control" id="accountHolder" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Withdrawal Amount -->
+                                    <div class="mb-3">
+                                        <label for="withdrawalAmount" class="form-label">المبلغ المراد سحبه</label>
+                                        <div class="input-group">
+                                            <input 
+                                                type="number" 
+                                                class="form-control" 
+                                                id="withdrawalAmount" 
+                                                placeholder="0.00"
+                                                min="0"
+                                                step="0.01"
+                                                required
+                                                oninput="calculateFee()"
+                                            >
+                                            <span class="input-group-text">SAR</span>
+                                        </div>
+                                        <small class="text-muted d-block mt-2">
+                                            الرسوم المتوقعة: <span id="expectedFee">0</span>
+                                        </small>
+                                    </div>
+
+                                    <!-- Summary -->
+                                    <div class="alert alert-info">
+                                        <strong>ستحصل على:</strong> <span id="finalAmount" class="float-end text-success fw-bold">0</span>
+                                    </div>
+
+                                    <!-- Submit -->
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                        <i class="bi bi-cash"></i> طلب السحب
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Withdrawal History -->
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">سجل السحب</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>التاريخ</th>
+                                                <th>المبلغ</th>
+                                                <th>الطريقة</th>
+                                                <th>الحالة</th>
+                                                <th>الملاحظات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="withdrawalHistoryBody">
+                                            <tr>
+                                                <td colspan="5" class="text-center py-4">
+                                                    <div class="spinner-border" role="status"></div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <div id="footerContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        const WITHDRAWAL_FEE_PERCENT = 2; // 2% رسوم
+        const MINIMUM_WITHDRAWAL = 100; // 100 SAR حد أدنى
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // التحقق من التسجيل
+            AppModule.redirectIfNotAuthenticated('login.html');
+            
+            // تحميل المكونات
+            const navbarHTML = await AppModule.loadComponent('components/navbar.html');
+            document.getElementById('navbarContainer').innerHTML = navbarHTML;
+            
+            const sidebarHTML = await AppModule.loadComponent('components/sidebar.html');
+            document.getElementById('sidebarContainer').innerHTML = sidebarHTML;
+            
+            const footerHTML = await AppModule.loadComponent('components/footer.html');
+            document.getElementById('footerContainer').innerHTML = footerHTML;
+            
+            // تهيئة واجهة المصادقة
+            initializeAuthUI();
+            
+            // تحميل بيانات السحب
+            loadWithdrawalData();
+            
+            // معالج اختيار طريقة السحب
+            document.querySelectorAll('input[name="withdrawalMethod"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    document.getElementById('bankSection').style.display = 
+                        this.value === 'bank' ? 'block' : 'none';
+                });
+            });
+            
+            // معالج نموذج السحب
+            document.getElementById('withdrawalForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                submitWithdrawal();
+            });
+        });
+
+        async function loadWithdrawalData() {
+            try {
+                const result = await AppModule.apiRequest('/withdrawals/info');
+                if (result.ok) {
+                    const data = result.data;
+                    document.getElementById('availableBalance').textContent = AppModule.formatCurrency(data.availableBalance || 0);
+                    document.getElementById('minimumWithdrawal').textContent = AppModule.formatCurrency(MINIMUM_WITHDRAWAL);
+                    document.getElementById('withdrawalFee').textContent = WITHDRAWAL_FEE_PERCENT + '%';
+                    
+                    loadWithdrawalHistory();
+                }
+            } catch (error) {
+                console.error('خطأ:', error);
+            }
+        }
+
+        function calculateFee() {
+            const amount = parseFloat(document.getElementById('withdrawalAmount').value) || 0;
+            const fee = (amount * WITHDRAWAL_FEE_PERCENT) / 100;
+            const finalAmount = amount - fee;
+            
+            document.getElementById('expectedFee').textContent = AppModule.formatCurrency(fee);
+            document.getElementById('finalAmount').textContent = AppModule.formatCurrency(finalAmount);
+        }
+
+        async function submitWithdrawal() {
+            const amount = parseFloat(document.getElementById('withdrawalAmount').value);
+            const method = document.querySelector('input[name="withdrawalMethod"]:checked').value;
+            
+            if (amount < MINIMUM_WITHDRAWAL) {
+                AppModule.showError(`الحد الأدنى للسحب هو ${AppModule.formatCurrency(MINIMUM_WITHDRAWAL)}`);
+                return;
+            }
+            
+            const withdrawalData = {
+                amount,
+                method,
+                bankInfo: method === 'bank' ? {
+                    bankName: document.getElementById('bankName').value,
+                    accountNumber: document.getElementById('accountNumber').value,
+                    accountHolder: document.getElementById('accountHolder').value
+                } : null
+            };
+            
+            try {
+                const result = await AppModule.apiRequest('/withdrawals', {
+                    method: 'POST',
+                    body: JSON.stringify(withdrawalData)
+                });
+                
+                if (result.ok) {
+                    AppModule.showSuccess('تم إنشاء طلب السحب بنجاح');
+                    document.getElementById('withdrawalForm').reset();
+                    calculateFee();
+                    loadWithdrawalHistory();
+                }
+            } catch (error) {
+                AppModule.showError('فشل إنشاء طلب السحب');
+            }
+        }
+
+        async function loadWithdrawalHistory() {
+            try {
+                const result = await AppModule.apiRequest('/withdrawals/history');
+                if (result.ok) {
+                    displayWithdrawalHistory(result.data.withdrawals || []);
+                }
+            } catch (error) {
+                console.error('خطأ:', error);
+            }
+        }
+
+        function displayWithdrawalHistory(withdrawals) {
+            const tbody = document.getElementById('withdrawalHistoryBody');
+            
+            if (!withdrawals || withdrawals.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">لا توجد طلبات سحب</td></tr>';
+                return;
+            }
+
+            let html = '';
+            withdrawals.forEach(withdrawal => {
+                html += `
+                    <tr>
+                        <td>${AppModule.formatDate(withdrawal.date)}</td>
+                        <td>${AppModule.formatCurrency(withdrawal.amount)}</td>
+                        <td>${withdrawal.method === 'bank' ? 'تحويل بنكي' : 'محفظة رقمية'}</td>
+                        <td><span class="badge bg-${getStatusBadgeColor(withdrawal.status)}">${withdrawal.status}</span></td>
+                        <td>${withdrawal.notes || '-'}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function getStatusBadgeColor(status) {
+            const colors = {
+                'pending': 'warning',
+                'completed': 'success',
+                'rejected': 'danger',
+                'processing': 'info'
+            };
+            return colors[status] || 'secondary';
+        }
+    </script>
+</body>
+</html>

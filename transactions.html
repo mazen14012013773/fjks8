@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المعاملات - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div id="navbarContainer"></div>
+
+    <!-- Main Container with Sidebar -->
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div id="sidebarContainer"></div>
+        
+        <!-- Main Content -->
+        <main class="with-sidebar flex-grow-1 p-4">
+            <div class="container-fluid">
+                <!-- Page Header -->
+                <div class="mb-4">
+                    <h1 class="fw-bold">المعاملات</h1>
+                    <p class="text-muted">سجل كامل معاملاتك المالية</p>
+                </div>
+
+                <!-- Filters -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <input 
+                            type="date" 
+                            class="form-control" 
+                            id="startDate"
+                            placeholder="من تاريخ"
+                        >
+                    </div>
+                    <div class="col-md-3">
+                        <input 
+                            type="date" 
+                            class="form-control" 
+                            id="endDate"
+                            placeholder="إلى تاريخ"
+                        >
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="transactionType">
+                            <option value="">جميع الأنواع</option>
+                            <option value="income">دخل</option>
+                            <option value="expense">نفقة</option>
+                            <option value="refund">استرجاع</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary w-100" onclick="filterTransactions()">تطبيق</button>
+                    </div>
+                </div>
+
+                <!-- Transactions Table -->
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">سجل المعاملات</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>التاريخ</th>
+                                        <th>الوصف</th>
+                                        <th>النوع</th>
+                                        <th>المبلغ</th>
+                                        <th>الرصيد</th>
+                                        <th>الحالة</th>
+                                        <th>الخيارات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactionsTableBody">
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">
+                                            <div class="spinner-border" role="status"></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div id="paginationContainer" class="mt-4"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <div id="footerContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        let currentPage = 1;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // التحقق من التسجيل
+            AppModule.redirectIfNotAuthenticated('login.html');
+            
+            // تحميل المكونات
+            const navbarHTML = await AppModule.loadComponent('components/navbar.html');
+            document.getElementById('navbarContainer').innerHTML = navbarHTML;
+            
+            const sidebarHTML = await AppModule.loadComponent('components/sidebar.html');
+            document.getElementById('sidebarContainer').innerHTML = sidebarHTML;
+            
+            const footerHTML = await AppModule.loadComponent('components/footer.html');
+            document.getElementById('footerContainer').innerHTML = footerHTML;
+            
+            // تهيئة واجهة المصادقة
+            initializeAuthUI();
+            
+            // تحميل المعاملات
+            loadTransactions();
+        });
+
+        async function loadTransactions(page = 1) {
+            currentPage = page;
+            
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const type = document.getElementById('transactionType').value;
+            
+            try {
+                let query = `/transactions?page=${page}`;
+                if (startDate) query += `&startDate=${startDate}`;
+                if (endDate) query += `&endDate=${endDate}`;
+                if (type) query += `&type=${type}`;
+                
+                const result = await AppModule.apiRequest(query);
+                if (result.ok) {
+                    displayTransactions(result.data.transactions || []);
+                    displayPagination(result.data.pagination || {});
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل المعاملات:', error);
+            }
+        }
+
+        function displayTransactions(transactions) {
+            const tbody = document.getElementById('transactionsTableBody');
+            
+            if (!transactions || transactions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-4">لا توجد معاملات</td></tr>';
+                return;
+            }
+
+            let html = '';
+            transactions.forEach(transaction => {
+                const typeClass = transaction.type === 'income' ? 'text-success' : 'text-danger';
+                const sign = transaction.type === 'income' ? '+' : '-';
+                
+                html += `
+                    <tr>
+                        <td>${AppModule.formatDate(transaction.date)}</td>
+                        <td>${transaction.description || '-'}</td>
+                        <td><span class="badge bg-${transaction.type === 'income' ? 'success' : 'danger'}">${transaction.type}</span></td>
+                        <td class="${typeClass} fw-bold">${sign}${AppModule.formatCurrency(transaction.amount)}</td>
+                        <td>${AppModule.formatCurrency(transaction.balance)}</td>
+                        <td><span class="badge bg-${transaction.status === 'completed' ? 'success' : 'warning'}">${transaction.status}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="viewTransactionDetails('${transaction.id}')">
+                                التفاصيل
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function displayPagination(pagination) {
+            const container = document.getElementById('paginationContainer');
+            if (!pagination.totalPages || pagination.totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '<nav><ul class="pagination justify-content-center">';
+            
+            for (let i = 1; i <= pagination.totalPages; i++) {
+                html += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="loadTransactions(${i}); return false;">
+                            ${i}
+                        </a>
+                    </li>
+                `;
+            }
+            
+            html += '</ul></nav>';
+            container.innerHTML = html;
+        }
+
+        function filterTransactions() {
+            loadTransactions(1);
+        }
+
+        function viewTransactionDetails(transactionId) {
+            // سيتم تطويره لاحقاً
+            AppModule.showInfo('سيتم عرض التفاصيل قريباً');
+        }
+    </script>
+</body>
+</html>

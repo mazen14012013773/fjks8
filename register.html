@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل جديد - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div id="navbarContainer"></div>
+
+    <!-- Register Container -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8 col-sm-10">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-5">
+                            <h2 class="text-center fw-bold mb-4">إنشاء حساب جديد</h2>
+                            
+                            <!-- User Type Selection -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">نوع الحساب</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input 
+                                        type="radio" 
+                                        class="btn-check" 
+                                        name="userType" 
+                                        id="freelancer" 
+                                        value="freelancer"
+                                        checked
+                                    >
+                                    <label class="btn btn-outline-primary flex-fill" for="freelancer">
+                                        <i class="bi bi-person-fill"></i> مستقل
+                                    </label>
+                                    
+                                    <input 
+                                        type="radio" 
+                                        class="btn-check" 
+                                        name="userType" 
+                                        id="employer" 
+                                        value="employer"
+                                    >
+                                    <label class="btn btn-outline-primary flex-fill" for="employer">
+                                        <i class="bi bi-briefcase"></i> صاحب مشروع
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <form id="registerForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="firstName" class="form-label">الاسم الأول</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="firstName" 
+                                            placeholder="الاسم الأول"
+                                            required
+                                        >
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="lastName" class="form-label">الاسم الأخير</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="lastName" 
+                                            placeholder="الاسم الأخير"
+                                            required
+                                        >
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">البريد الإلكتروني</label>
+                                    <input 
+                                        type="email" 
+                                        class="form-control" 
+                                        id="email" 
+                                        placeholder="أدخل بريدك الإلكتروني"
+                                        required
+                                    >
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">رقم الهاتف</label>
+                                    <input 
+                                        type="tel" 
+                                        class="form-control" 
+                                        id="phone" 
+                                        placeholder="رقم الهاتف"
+                                    >
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">كلمة المرور</label>
+                                    <input 
+                                        type="password" 
+                                        class="form-control" 
+                                        id="password" 
+                                        placeholder="أدخل كلمة مرور قوية"
+                                        required
+                                    >
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">تأكيد كلمة المرور</label>
+                                    <input 
+                                        type="password" 
+                                        class="form-control" 
+                                        id="confirmPassword" 
+                                        placeholder="أعد إدخال كلمة المرور"
+                                        required
+                                    >
+                                </div>
+                                
+                                <div class="mb-3 form-check">
+                                    <input 
+                                        type="checkbox" 
+                                        class="form-check-input" 
+                                        id="agreeTerms"
+                                        required
+                                    >
+                                    <label class="form-check-label" for="agreeTerms">
+                                        أوافق على الشروط والأحكام
+                                    </label>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-100 mb-3">تسجيل</button>
+                            </form>
+                            
+                            <div class="text-center">
+                                <p class="text-muted">
+                                    هل لديك حساب بالفعل؟ 
+                                    <a href="login.html" class="text-decoration-none fw-bold">دخول</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div id="footerContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // تحميل المكونات
+            const navbarHTML = await AppModule.loadComponent('components/navbar.html');
+            document.getElementById('navbarContainer').innerHTML = navbarHTML;
+            
+            const footerHTML = await AppModule.loadComponent('components/footer.html');
+            document.getElementById('footerContainer').innerHTML = footerHTML;
+            
+            // معالج نموذج التسجيل
+            document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                const userType = document.querySelector('input[name="userType"]:checked').value;
+                
+                // التحقق من تطابق كلمات المرور
+                if (password !== confirmPassword) {
+                    AppModule.showError('كلمات المرور غير متطابقة');
+                    return;
+                }
+                
+                try {
+                    const result = await AuthModule.register({
+                        firstName,
+                        lastName,
+                        email,
+                        phone,
+                        password,
+                        type: userType
+                    });
+                    
+                    if (result) {
+                        AppModule.showSuccess('تم التسجيل بنجاح');
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1500);
+                    }
+                } catch (error) {
+                    AppModule.showError('فشل التسجيل. حاول مرة أخرى');
+                }
+            });
+            
+            if (AuthModule.isAuthenticated()) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

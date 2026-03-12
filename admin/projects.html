@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المشاريع - إدارة FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+    <!-- Main Content -->
+    <main class="p-4">
+        <div class="container-fluid">
+            <h1 class="fw-bold mb-4">إدارة المشاريع</h1>
+
+            <!-- Filter Options -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="searchProjects" placeholder="بحث عن مشروع...">
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" id="projectStatus">
+                        <option value="">جميع الحالات</option>
+                        <option value="open">مفتوح</option>
+                        <option value="in_progress">قيد التنفيذ</option>
+                        <option value="completed">مكتمل</option>
+                        <option value="cancelled">ملغي</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" id="projectCategory">
+                        <option value="">جميع الفئات</option>
+                        <option value="web">تطوير ويب</option>
+                        <option value="design">تصميم</option>
+                        <option value="mobile">تطبيقات موبايل</option>
+                        <option value="content">كتابة المحتوى</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Projects Table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="projectsTable">
+                            <thead>
+                                <tr>
+                                    <th>اسم المشروع</th>
+                                    <th>صاحب المشروع</th>
+                                    <th>الفئة</th>
+                                    <th>الميزانية</th>
+                                    <th>الحالة</th>
+                                    <th>تاريخ الإنشاء</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="projectsTableBody">
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">
+                                        <div class="spinner-border" role="status"></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Project Details Modal -->
+    <div class="modal fade" id="projectModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تفاصيل المشروع</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="projectDetailsContainer">
+                    <!-- سيتم تحميل التفاصيل هنا -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                    <button type="button" class="btn btn-danger" id="deleteProjectBtn">حذف المشروع</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+    
+    <script>
+        let projectsData = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            AppModule.redirectIfNotAuthenticated('../login.html');
+            loadProjects();
+            setupFilters();
+        });
+
+        function setupFilters() {
+            document.getElementById('searchProjects').addEventListener('input', filterProjects);
+            document.getElementById('projectStatus').addEventListener('change', filterProjects);
+            document.getElementById('projectCategory').addEventListener('change', filterProjects);
+        }
+
+        async function loadProjects() {
+            try {
+                const result = await DashboardModule.getAllProjects(1, 100);
+                if (result.ok) {
+                    projectsData = result.data.projects || [];
+                    displayProjects(projectsData);
+                }
+            } catch (error) {
+                console.error('خطأ:', error);
+            }
+        }
+
+        function displayProjects(projects) {
+            const tbody = document.getElementById('projectsTableBody');
+            if (!projects || projects.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-4">لا توجد مشاريع</td></tr>';
+                return;
+            }
+
+            let html = '';
+            projects.forEach(project => {
+                html += `
+                    <tr>
+                        <td><strong>${project.title}</strong></td>
+                        <td>${project.clientName}</td>
+                        <td>${project.category}</td>
+                        <td>${AppModule.formatCurrency(project.budget)}</td>
+                        <td><span class="badge bg-${getStatusColor(project.status)}">${project.status}</span></td>
+                        <td>${AppModule.formatDate(project.createdAt)}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="viewProjectDetails('${project.id}')">عرض</button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteProject('${project.id}')">حذف</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'open': 'success',
+                'in_progress': 'warning',
+                'completed': 'info',
+                'cancelled': 'danger'
+            };
+            return colors[status] || 'secondary';
+        }
+
+        function filterProjects() {
+            const search = document.getElementById('searchProjects').value.toLowerCase();
+            const status = document.getElementById('projectStatus').value;
+            const category = document.getElementById('projectCategory').value;
+
+            const filtered = projectsData.filter(p => {
+                return (p.title.toLowerCase().includes(search) || p.clientName.toLowerCase().includes(search)) &&
+                       (!status || p.status === status) &&
+                       (!category || p.category === category);
+            });
+
+            displayProjects(filtered);
+        }
+
+        function viewProjectDetails(projectId) {
+            const project = projectsData.find(p => p.id === projectId);
+            if (!project) return;
+
+            const detailsHTML = `
+                <div class="mb-3">
+                    <h6>اسم المشروع</h6>
+                    <p>${project.title}</p>
+                </div>
+                <div class="mb-3">
+                    <h6>الوصف</h6>
+                    <p>${project.description}</p>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>الميزانية</h6>
+                        <p>${AppModule.formatCurrency(project.budget)}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>الحالة</h6>
+                        <p><span class="badge bg-${getStatusColor(project.status)}">${project.status}</span></p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h6>المهارات المطلوبة</h6>
+                    <div>${project.skills.map(s => `<span class="badge bg-secondary me-1">${s}</span>`).join('')}</div>
+                </div>
+            `;
+
+            document.getElementById('projectDetailsContainer').innerHTML = detailsHTML;
+            document.getElementById('deleteProjectBtn').onclick = () => deleteProject(projectId);
+
+            new bootstrap.Modal(document.getElementById('projectModal')).show();
+        }
+
+        function deleteProject(projectId) {
+            if (confirm('هل تأكد من حذف هذا المشروع؟')) {
+                // سيتم تطويره مع الـ API
+                console.log('حذف المشروع:', projectId);
+            }
+        }
+    </script>
+</body>
+</html>

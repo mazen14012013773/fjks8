@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإعدادات - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div id="navbarContainer"></div>
+
+    <!-- Main Container with Sidebar -->
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div id="sidebarContainer"></div>
+        
+        <!-- Main Content -->
+        <main class="with-sidebar flex-grow-1 p-4">
+            <div class="container-fluid">
+                <!-- Page Header -->
+                <div class="mb-4">
+                    <h1 class="fw-bold">الإعدادات</h1>
+                    <p class="text-muted">تخصيص حسابك والتحكم بالخصوصية</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Settings Navigation -->
+                    <div class="col-lg-3">
+                        <div class="list-group sticky-top" style="top: 20px;">
+                            <a href="#account" class="list-group-item list-group-item-action active" data-bs-toggle="list">
+                                <i class="bi bi-person"></i> حساب
+                            </a>
+                            <a href="#security" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                                <i class="bi bi-shield-lock"></i> الأمان
+                            </a>
+                            <a href="#privacy" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                                <i class="bi bi-eye-slash"></i> الخصوصية
+                            </a>
+                            <a href="#notifications" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                                <i class="bi bi-bell"></i> الإخطارات
+                            </a>
+                            <a href="#billing" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                                <i class="bi bi-credit-card"></i> الفواتير
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Settings Content -->
+                    <div class="col-lg-9">
+                        <!-- Account Settings -->
+                        <div class="card mb-4" id="account">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0"><i class="bi bi-person"></i> إعدادات الحساب</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="accountForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="firstName" class="form-label">الاسم الأول</label>
+                                            <input type="text" class="form-control" id="firstName" placeholder="الاسم الأول">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="lastName" class="form-label">الاسم الأخير</label>
+                                            <input type="text" class="form-control" id="lastName" placeholder="الاسم الأخير">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">البريد الإلكتروني</label>
+                                        <input type="email" class="form-control" id="email" placeholder="بريدك الإلكتروني">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">رقم الهاتف</label>
+                                        <input type="tel" class="form-control" id="phone" placeholder="رقم الهاتف">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="bio" class="form-label">نبذة عن نفسك</label>
+                                        <textarea class="form-control" id="bio" rows="3" placeholder="نبذة قصيرة عنك"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Security Settings -->
+                        <div class="card mb-4" id="security">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0"><i class="bi bi-shield-lock"></i> الأمان</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="securityForm">
+                                    <div class="mb-3">
+                                        <label for="currentPassword" class="form-label">كلمة المرور الحالية</label>
+                                        <input type="password" class="form-control" id="currentPassword" placeholder="أدخل كلمة المرور الحالية">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="newPassword" class="form-label">كلمة المرور الجديدة</label>
+                                        <input type="password" class="form-control" id="newPassword" placeholder="أدخل كلمة المرور الجديدة">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmPassword" class="form-label">تأكيد كلمة المرور</label>
+                                        <input type="password" class="form-control" id="confirmPassword" placeholder="أعد إدخال كلمة المرور">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">تحديث كلمة المرور</button>
+                                </form>
+                                
+                                <hr>
+                                
+                                <h6 class="fw-bold mb-3">جلسات نشطة</h6>
+                                <button class="btn btn-outline-danger btn-sm">تسجيل الخروج من جميع الأجهزة</button>
+                            </div>
+                        </div>
+
+                        <!-- Privacy Settings -->
+                        <div class="card mb-4" id="privacy">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0"><i class="bi bi-eye-slash"></i> الخصوصية</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="profileVisibility" checked>
+                                    <label class="form-check-label" for="profileVisibility">
+                                        اسمح للآخرين برؤية ملفي الشخصي
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="showEmail">
+                                    <label class="form-check-label" for="showEmail">
+                                        اسمح برؤية بريدي الإلكتروني
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="showPhone">
+                                    <label class="form-check-label" for="showPhone">
+                                        اسمح برؤية رقم هاتفي
+                                    </label>
+                                </div>
+                                <button class="btn btn-primary" onclick="savePrivacySettings()">حفظ الإعدادات</button>
+                            </div>
+                        </div>
+
+                        <!-- Notification Settings -->
+                        <div class="card mb-4" id="notifications">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0"><i class="bi bi-bell"></i> الإخطارات</h5>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="fw-bold mb-3">البريد الإلكتروني</h6>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="emailProposals" checked>
+                                    <label class="form-check-label" for="emailProposals">
+                                        تنبيهات العروض الجديدة
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="emailMessages" checked>
+                                    <label class="form-check-label" for="emailMessages">
+                                        تنبيهات الرسائل الجديدة
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="emailPayments" checked>
+                                    <label class="form-check-label" for="emailPayments">
+                                        تنبيهات الدفعات
+                                    </label>
+                                </div>
+                                <button class="btn btn-primary" onclick="saveNotificationSettings()">حفظ التنبيهات</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <div id="footerContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // التحقق من التسجيل
+            AppModule.redirectIfNotAuthenticated('login.html');
+            
+            // تحميل المكونات
+            const navbarHTML = await AppModule.loadComponent('components/navbar.html');
+            document.getElementById('navbarContainer').innerHTML = navbarHTML;
+            
+            const sidebarHTML = await AppModule.loadComponent('components/sidebar.html');
+            document.getElementById('sidebarContainer').innerHTML = sidebarHTML;
+            
+            const footerHTML = await AppModule.loadComponent('components/footer.html');
+            document.getElementById('footerContainer').innerHTML = footerHTML;
+            
+            // تهيئة واجهة المصادقة
+            initializeAuthUI();
+            
+            // تحميل بيانات المستخدم
+            loadUserSettings();
+            
+            // معالج نموذج الحساب
+            document.getElementById('accountForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const userData = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    bio: document.getElementById('bio').value
+                };
+                
+                try {
+                    const result = await AuthModule.updateProfile(userData);
+                    if (result) {
+                        AppModule.showSuccess('تم تحديث الملف الشخصي بنجاح');
+                    }
+                } catch (error) {
+                    AppModule.showError('فشل تحديث الملف الشخصي');
+                }
+            });
+            
+            // معالج نموذج الأمان
+            document.getElementById('securityForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (newPassword !== confirmPassword) {
+                    AppModule.showError('كلمات المرور غير متطابقة');
+                    return;
+                }
+                
+                try {
+                    const result = await AuthModule.changePassword(currentPassword, newPassword);
+                    if (result) {
+                        AppModule.showSuccess('تم تحديث كلمة المرور بنجاح');
+                        document.getElementById('securityForm').reset();
+                    }
+                } catch (error) {
+                    AppModule.showError('فشل تحديث كلمة المرور');
+                }
+            });
+        });
+
+        async function loadUserSettings() {
+            const user = AuthModule.getUser();
+            if (user) {
+                document.getElementById('firstName').value = user.firstName || '';
+                document.getElementById('lastName').value = user.lastName || '';
+                document.getElementById('email').value = user.email || '';
+                document.getElementById('phone').value = user.phone || '';
+                document.getElementById('bio').value = user.bio || '';
+            }
+        }
+
+        function savePrivacySettings() {
+            AppModule.showSuccess('تم حفظ إعدادات الخصوصية');
+        }
+
+        function saveNotificationSettings() {
+            AppModule.showSuccess('تم حفظ إعدادات الإخطارات');
+        }
+    </script>
+</body>
+</html>

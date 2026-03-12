@@ -1,0 +1,134 @@
+<!-- Sidebar Component (للوحة التحكم والصفحات الداخلية) -->
+<aside class="sidebar bg-light border-end h-100 position-fixed" style="width: 280px; top: 0; left: 0;">
+    <div class="p-3 border-bottom">
+        <h5 class="fw-bold">
+            <span class="text-primary">Freelance</span>Hub
+        </h5>
+    </div>
+    
+    <nav class="nav flex-column p-3 gap-2" id="sidebarNav">
+        <!-- User Profile Section -->
+        <div class="mb-3 pb-3 border-bottom">
+            <div class="d-flex align-items-center gap-2">
+                <img src="assets/images/avatars/default.jpg" alt="الملف الشخصي" class="rounded-circle" width="40" height="40">
+                <div>
+                    <small class="d-block fw-bold" id="sidebarUserName"></small>
+                    <small class="text-muted" id="sidebarUserRole"></small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Items -->
+        <h6 class="text-muted text-uppercase small fw-bold mb-2">القائمة الرئيسية</h6>
+        
+        <a href="dashboard.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-speedometer2"></i>
+            <span>لوحة التحكم</span>
+        </a>
+        
+        <!-- For Freelancers -->
+        <h6 class="text-muted text-uppercase small fw-bold mb-2 mt-3">للمستقلين</h6>
+        
+        <a href="projects.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-briefcase"></i>
+            <span>المشاريع المتاحة</span>
+        </a>
+        
+        <a href="my-proposals.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-send"></i>
+            <span>طلباتي</span>
+        </a>
+        
+        <a href="freelancer-profile.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-person"></i>
+            <span>ملفي الشخصي</span>
+        </a>
+        
+        <!-- For Employers -->
+        <h6 class="text-muted text-uppercase small fw-bold mb-2 mt-3">للأصحاب المشاريع</h6>
+        
+        <a href="post-project.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-plus-circle"></i>
+            <span>نشر مشروع جديد</span>
+        </a>
+        
+        <a href="my-projects.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-folder"></i>
+            <span>مشاريعي</span>
+        </a>
+        
+        <a href="freelancers.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-people"></i>
+            <span>البحث عن مستقلين</span>
+        </a>
+        
+        <!-- Communication -->
+        <h6 class="text-muted text-uppercase small fw-bold mb-2 mt-3">التواصل</h6>
+        
+        <a href="messages.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-chat"></i>
+            <span>الرسائل</span>
+            <span class="badge bg-danger ms-auto" id="messageCount" style="display:none;"></span>
+        </a>
+        
+        <a href="notifications.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-bell"></i>
+            <span>الإخطارات</span>
+            <span class="badge bg-danger ms-auto" id="notificationCount" style="display:none;"></span>
+        </a>
+        
+        <!-- Financial -->
+        <h6 class="text-muted text-uppercase small fw-bold mb-2 mt-3">المالية</h6>
+        
+        <a href="payments.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-credit-card"></i>
+            <span>الدفعات</span>
+        </a>
+        
+        <a href="transactions.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-graph-up"></i>
+            <span>المعاملات</span>
+        </a>
+        
+        <a href="withdraw.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-cash"></i>
+            <span>سحب الأموال</span>
+        </a>
+        
+        <!-- User Settings -->
+        <h6 class="text-muted text-uppercase small fw-bold mb-2 mt-3">الحساب</h6>
+        
+        <a href="settings.html" class="nav-link d-flex align-items-center gap-2 text-dark">
+            <i class="bi bi-sliders"></i>
+            <span>الإعدادات</span>
+        </a>
+        
+        <a href="#" class="nav-link d-flex align-items-center gap-2 text-dark" onclick="logout(); return false;">
+            <i class="bi bi-box-arrow-left"></i>
+            <span>تسجيل الخروج</span>
+        </a>
+    </nav>
+</aside>
+
+<!-- Main Content Wrapper (استخدم هذا في الصفحات التي تستخدم الـ sidebar) -->
+<style>
+    .with-sidebar {
+        margin-right: 280px;
+    }
+    
+    @media (max-width: 768px) {
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .sidebar.show {
+            transform: translateX(0);
+        }
+        
+        .with-sidebar {
+            margin-right: 0;
+        }
+    }
+</style>

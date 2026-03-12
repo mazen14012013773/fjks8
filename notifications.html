@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإخطارات - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div id="navbarContainer"></div>
+
+    <!-- Main Container with Sidebar -->
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div id="sidebarContainer"></div>
+        
+        <!-- Main Content -->
+        <main class="with-sidebar flex-grow-1 p-4">
+            <div class="container-fluid">
+                <!-- Page Header -->
+                <div class="mb-4 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="fw-bold">الإخطارات</h1>
+                        <p class="text-muted">تابع جميع إخطاراتك</p>
+                    </div>
+                    <button class="btn btn-sm btn-outline-danger" onclick="clearAllNotifications()">
+                        <i class="bi bi-trash"></i> مسح الكل
+                    </button>
+                </div>
+
+                <!-- Filter Tabs -->
+                <ul class="nav nav-tabs mb-4" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="allTab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">
+                            <i class="bi bi-bell"></i> الكل
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="unreadTab" data-bs-toggle="tab" data-bs-target="#unread" type="button" role="tab">
+                            <i class="bi bi-bell-fill"></i> غير مقروء
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="projectsTab" data-bs-toggle="tab" data-bs-target="#projects" type="button" role="tab">
+                            <i class="bi bi-briefcase"></i> المشاريع
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="messagesTab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab">
+                            <i class="bi bi-chat"></i> الرسائل
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="systemTab" data-bs-toggle="tab" data-bs-target="#system" type="button" role="tab">
+                            <i class="bi bi-gear"></i> النظام
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- All Notifications -->
+                    <div class="tab-pane fade show active" id="all" role="tabpanel">
+                        <div id="allNotificationsContainer">
+                            <div class="text-center py-5">
+                                <div class="spinner-border" role="status"></div>
+                                <p class="text-muted mt-2">جاري التحميل...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unread -->
+                    <div class="tab-pane fade" id="unread" role="tabpanel">
+                        <div id="unreadNotificationsContainer">
+                            <div class="text-center py-5">
+                                <div class="spinner-border" role="status"></div>
+                                <p class="text-muted mt-2">جاري التحميل...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Projects -->
+                    <div class="tab-pane fade" id="projects" role="tabpanel">
+                        <div id="projectsNotificationsContainer">
+                            <div class="text-center py-5">
+                                <div class="spinner-border" role="status"></div>
+                                <p class="text-muted mt-2">جاري التحميل...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Messages -->
+                    <div class="tab-pane fade" id="messages" role="tabpanel">
+                        <div id="messagesNotificationsContainer">
+                            <div class="text-center py-5">
+                                <div class="spinner-border" role="status"></div>
+                                <p class="text-muted mt-2">جاري التحميل...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System -->
+                    <div class="tab-pane fade" id="system" role="tabpanel">
+                        <div id="systemNotificationsContainer">
+                            <div class="text-center py-5">
+                                <div class="spinner-border" role="status"></div>
+                                <p class="text-muted mt-2">جاري التحميل...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <div id="footerContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // التحقق من التسجيل
+            AppModule.redirectIfNotAuthenticated('login.html');
+            
+            // تحميل المكونات
+            const navbarHTML = await AppModule.loadComponent('components/navbar.html');
+            document.getElementById('navbarContainer').innerHTML = navbarHTML;
+            
+            const sidebarHTML = await AppModule.loadComponent('components/sidebar.html');
+            document.getElementById('sidebarContainer').innerHTML = sidebarHTML;
+            
+            const footerHTML = await AppModule.loadComponent('components/footer.html');
+            document.getElementById('footerContainer').innerHTML = footerHTML;
+            
+            // تهيئة واجهة المصادقة
+            initializeAuthUI();
+            
+            // تحميل الإخطارات
+            loadNotifications();
+        });
+
+        async function loadNotifications() {
+            try {
+                const result = await AppModule.apiRequest('/notifications');
+                if (result.ok) {
+                    const notifications = result.data.notifications || [];
+                    
+                    displayNotifications(notifications, 'allNotificationsContainer');
+                    displayNotifications(notifications.filter(n => !n.read), 'unreadNotificationsContainer');
+                    displayNotifications(notifications.filter(n => n.type === 'project'), 'projectsNotificationsContainer');
+                    displayNotifications(notifications.filter(n => n.type === 'message'), 'messagesNotificationsContainer');
+                    displayNotifications(notifications.filter(n => n.type === 'system'), 'systemNotificationsContainer');
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل الإخطارات:', error);
+            }
+        }
+
+        function displayNotifications(notifications, containerId) {
+            const container = document.getElementById(containerId);
+            
+            if (!notifications || notifications.length === 0) {
+                container.innerHTML = `
+                    <div class="alert alert-info text-center">
+                        <i class="bi bi-info-circle"></i> لا توجد إخطارات
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="list-group">';
+            notifications.forEach(notif => {
+                html += `
+                    <button 
+                        type="button" 
+                        class="list-group-item list-group-item-action ${!notif.read ? 'active' : ''}"
+                        onclick="markAsRead('${notif.id}')"
+                    >
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div style="flex: 1;">
+                                <h6 class="mb-1 ${notif.read ? 'text-muted' : ''}">${notif.title || 'إخطار'}</h6>
+                                <p class="mb-1 ${notif.read ? 'text-muted' : ''}">${notif.message || ''}</p>
+                                <small class="${notif.read ? 'text-muted-light' : 'text-white-50'}">
+                                    ${AppModule.formatDate(notif.createdAt)}
+                                </small>
+                            </div>
+                            <button 
+                                class="btn btn-sm btn-outline-danger ms-2" 
+                                onclick="deleteNotification('${notif.id}'); event.stopPropagation();"
+                            >
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </button>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        async function markAsRead(notificationId) {
+            // سيتم تطويره لاحقاً
+            await AppModule.apiRequest(`/notifications/${notificationId}/read`, {
+                method: 'PUT'
+            });
+            loadNotifications();
+        }
+
+        async function deleteNotification(notificationId) {
+            if (confirm('هل تأكد من حذف هذا الإخطار؟')) {
+                await AppModule.apiRequest(`/notifications/${notificationId}`, {
+                    method: 'DELETE'
+                });
+                loadNotifications();
+            }
+        }
+
+        async function clearAllNotifications() {
+            if (confirm('هل تأكد من مسح جميع الإخطارات؟')) {
+                await AppModule.apiRequest('/notifications/clear', {
+                    method: 'DELETE'
+                });
+                loadNotifications();
+            }
+        }
+    </script>
+</body>
+</html>

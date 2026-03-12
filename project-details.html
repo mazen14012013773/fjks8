@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل المشروع - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div id="navbarContainer"></div>
+
+    <!-- Main Content -->
+    <main class="py-5">
+        <div class="container">
+            <div class="row" id="projectContainer">
+                <!-- Project Details -->
+                <div class="col-lg-8 col-md-7 mb-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h2 class="fw-bold mb-3" id="projectTitle">-</h2>
+                            <p class="text-muted" id="projectDescription">-</p>
+                            
+                            <!-- Project Meta Info -->
+                            <div class="row g-3 mb-4 py-3 border-top border-bottom">
+                                <div class="col-md-3">
+                                    <small class="text-muted d-block">الفئة</small>
+                                    <strong id="projectCategory">-</strong>
+                                </div>
+                                <div class="col-md-3">
+                                    <small class="text-muted d-block">المستوى</small>
+                                    <strong id="projectLevel">-</strong>
+                                </div>
+                                <div class="col-md-3">
+                                    <small class="text-muted d-block">الميزانية</small>
+                                    <strong class="text-primary" id="projectBudget">-</strong>
+                                </div>
+                                <div class="col-md-3">
+                                    <small class="text-muted d-block">الموعد</small>
+                                    <strong id="projectDeadline">-</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Requirements -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0">المتطلبات</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul id="projectRequirements" class="list-group list-group-flush">
+                                <li class="list-group-item">تحميل...</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Skills Required -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0">المهارات المطلوبة</h5>
+                        </div>
+                        <div class="card-body" id="requiredSkills">
+                            <div class="spinner-border" role="status"></div>
+                        </div>
+                    </div>
+
+                    <!-- Proposals Section -->
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0">
+                                <span id="proposalsCount">0</span> عروض
+                            </h5>
+                        </div>
+                        <div class="card-body" id="proposalsContainer">
+                            <div class="spinner-border" role="status"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4 col-md-5">
+                    <!-- Client Info -->
+                    <div class="card sticky-top mb-3" style="top: 20px;">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0">صاحب المشروع</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <img src="assets/images/avatars/default.jpg" alt="العميل" class="rounded-circle mb-3" width="80" height="80">
+                            <h6 class="fw-bold" id="clientName">-</h6>
+                            <small class="text-muted d-block mb-3" id="clientStatus">-</small>
+                            <button class="btn btn-primary btn-sm w-100 mb-2" onclick="contactClient()">
+                                <i class="bi bi-chat"></i> تواصل
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#proposalModal">
+                                <i class="bi bi-send"></i> قدم عرضك
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Project Status -->
+                    <div class="card sticky-top mb-3" style="top: 120px;">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0">حالة المشروع</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info mb-0" id="projectStatus">جاري</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Proposal Modal -->
+    <div class="modal fade" id="proposalModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تقديم عرض</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="proposalForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="proposalBudget" class="form-label">عرضك (السعر)</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="proposalBudget" required>
+                                <span class="input-group-text">SAR</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="proposalDuration" class="form-label">المدة المتوقعة</label>
+                            <input type="text" class="form-control" id="proposalDuration" placeholder="مثل: 2 أسابيع" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="proposalCover" class="form-label">رسالة العرض</label>
+                            <textarea class="form-control" id="proposalCover" rows="4" placeholder="اشرح لماذا أنت الخيار الأفضل" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                        <button type="submit" class="btn btn-primary">إرسال العرض</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footerContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/projects.js"></script>
+    
+    <script>
+        let projectId = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // الحصول على معرّف المشروع من URL
+            projectId = AppModule.getQueryParam('id');
+            
+            // تحميل المكونات
+            const navbarHTML = await AppModule.loadComponent('components/navbar.html');
+            document.getElementById('navbarContainer').innerHTML = navbarHTML;
+            
+            const footerHTML = await AppModule.loadComponent('components/footer.html');
+            document.getElementById('footerContainer').innerHTML = footerHTML;
+            
+            // تهيئة واجهة المصادقة
+            initializeAuthUI();
+            
+            // تحميل بيانات المشروع
+            if (projectId) {
+                loadProjectDetails();
+                loadProposals();
+            } else {
+                document.getElementById('projectContainer').innerHTML = '<p class="text-danger">لم يتم العثور على المشروع</p>';
+            }
+            
+            // معالج نموذج العرض
+            document.getElementById('proposalForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if (!AuthModule.isAuthenticated()) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                const proposalData = {
+                    amount: parseFloat(document.getElementById('proposalBudget').value),
+                    duration: document.getElementById('proposalDuration').value,
+                    message: document.getElementById('proposalCover').value
+                };
+                
+                try {
+                    const result = await ProjectsModule.submitProposal(projectId, proposalData);
+                    if (result.ok) {
+                        AppModule.showSuccess('تم تقديم عرضك بنجاح');
+                        bootstrap.Modal.getInstance(document.getElementById('proposalModal')).hide();
+                        document.getElementById('proposalForm').reset();
+                        loadProposals();
+                    }
+                } catch (error) {
+                    AppModule.showError('فشل تقديم العرض');
+                }
+            });
+        });
+
+        async function loadProjectDetails() {
+            try {
+                const result = await ProjectsModule.getProjectDetails(projectId);
+                if (result.ok) {
+                    displayProjectDetails(result.data);
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل تفاصيل المشروع:', error);
+            }
+        }
+
+        function displayProjectDetails(project) {
+            document.getElementById('projectTitle').textContent = project.title || '-';
+            document.getElementById('projectDescription').textContent = project.description || '-';
+            document.getElementById('projectCategory').textContent = project.category || '-';
+            document.getElementById('projectLevel').textContent = project.experienceLevel || '-';
+            document.getElementById('projectBudget').textContent = AppModule.formatCurrency(project.budget || 0);
+            document.getElementById('projectDeadline').textContent = AppModule.formatDate(project.deadline);
+            document.getElementById('clientName').textContent = project.clientName || '-';
+            document.getElementById('clientStatus').textContent = project.clientRating ? `⭐ ${project.clientRating}/5` : '-';
+            
+            // Requirements
+            let requirementsHTML = '';
+            (project.requirements || []).forEach(req => {
+                requirementsHTML += `<li class="list-group-item">${req}</li>`;
+            });
+            document.getElementById('projectRequirements').innerHTML = requirementsHTML || '<li class="list-group-item text-muted">لا توجد متطلبات محددة</li>';
+            
+            // Skills
+            let skillsHTML = '<div class="d-flex flex-wrap gap-2">';
+            (project.requiredSkills || []).forEach(skill => {
+                skillsHTML += `<span class="badge bg-info">${skill}</span>`;
+            });
+            skillsHTML += '</div>';
+            document.getElementById('requiredSkills').innerHTML = skillsHTML || '<p class="text-muted">لا توجد مهارات محددة</p>';
+        }
+
+        async function loadProposals() {
+            try {
+                const result = await ProjectsModule.getProjectProposals(projectId);
+                if (result.ok) {
+                    const proposals = result.data.proposals || [];
+                    document.getElementById('proposalsCount').textContent = proposals.length;
+                    
+                    let proposalsHTML = '';
+                    proposals.forEach(proposal => {
+                        proposalsHTML += `
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="mb-0">${proposal.freelancerName}</h6>
+                                        <small class="text-warning">★${proposal.freelancerRating}/5</small>
+                                    </div>
+                                    <p class="small mb-2">${proposal.message}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <strong class="text-primary">${AppModule.formatCurrency(proposal.amount)}</strong>
+                                        <small class="text-muted">${proposal.duration}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('proposalsContainer').innerHTML = proposalsHTML || '<p class="text-muted">لم تتلقَ أي عروض حتى الآن</p>';
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل العروض:', error);
+            }
+        }
+
+        function contactClient() {
+            if (!AuthModule.isAuthenticated()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            // سيتم تطويره لاحقاً
+            window.location.href = 'messages.html';
+        }
+    </script>
+</body>
+</html>
