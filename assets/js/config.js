@@ -20,7 +20,7 @@ const API_CONFIG = {
 
     // Production Environment
     production: {
-        baseURL: 'https://api.freelancehub.com/api',
+        baseURL: 'https://fjks8-production.up.railway.app/api',
         timeout: 30000,
         enableLogging: false
     }
